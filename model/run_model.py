@@ -1,7 +1,8 @@
 # imports and directory setup
 from data_loader import PromptCollator
-from checkpoint_loader import Checkpoint
+from checkpoint_handler import Checkpoint
 from model_loader import ModelFactory
+from enums import ModelType, PromptType
 
 import pickle
 import datasets
@@ -45,7 +46,7 @@ def setup():
     )
     parser.add_argument(
         "--model_type",
-        type=enum_type(PromptType),
+        type=enum_type(ModelType),
         help="Type of the model: hf_chat",
         default="hf_chat",
     )
@@ -146,9 +147,6 @@ def setup():
         help="Absolute directory of the output results folder",
         default="./",
     )
-
-    HfFolder.save_token(args.hf_token)
-
     args = parser.parse_args()
     print(args)
     return args
@@ -161,7 +159,6 @@ def main(args):
 
     # load checkpoints
     checkpoint_loader = Checkpoint(args)
-    start, end = checkpoint_loader.get_bounds()
     
     # load prompt collator
     prompt_collator = PromptCollator(args)
@@ -171,14 +168,21 @@ def main(args):
         # set output directories
         checkpoint_loader.set_directories(pt) 
 
-        # get prompts and load current save state
+        # get prompts and dataset size
         prompts = prompt_collator.get_prompts(pt, checkpoint_loader)
+        
+        # set up inference bounds
+        start, end = checkpoint_loader.setup_partition(len(prompts))
+
+        # load current save state
         outputs = checkpoint_loader.load_checkpoint()
 
-        # inference
         for idx in tqdm.tqdm(range(start, end)):
             prompt = prompts[idx]
+            print(prompt)
             out_text = model.generate_text(prompt)
+            print(out_text)
+            exit(0)
             outputs['raw_text'].append(out_text)
             outputs['prompt'].append(prompt)
             checkpoint_loader.save_checkpoint(outputs, False)

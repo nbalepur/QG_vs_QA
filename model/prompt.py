@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import random
 import copy
+from enums import PromptType
 
 # Abstract base class for implementing zero-shot prompts
 class ZeroShotPrompt(ABC):
@@ -47,11 +48,6 @@ class QuestionAnsweringCoT(ZeroShotPrompt):
         prompt += ' Let\'s think step by step.'
         return prompt
 
-class PromptType(Enum):
-    qg = 'qg'
-    qa = 'qa'
-    qg_cot = 'qg_cot'
-    qa_cot = 'qa_cot'
 
 class PromptFactory:
 
@@ -64,9 +60,8 @@ class PromptFactory:
             PromptType.qa_cot: QuestionAnsweringCoT,
         }
 
-    @staticmethod
-    def get_prompt(prompt_type):
+    def get_prompt(self, prompt_type):
         if prompt_type in self.prompt_type_map:
-            return self.prompt_type_map[prompt_type]
+            return self.prompt_type_map[prompt_type]()
         else:
             raise ValueError(f"Unsupported Prompt type: {prompt_type}")

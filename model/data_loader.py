@@ -1,7 +1,9 @@
 from enum import Enum
+from enums import PromptType
+import os
 import datasets
 import numpy as np
-from prompt import *
+from prompt import PromptFactory
 import pickle
 import contextlib
 from datasets.utils.logging import disable_progress_bar
@@ -47,9 +49,9 @@ class DataFetcherFactory:
 
     @staticmethod
     def get_data_fetcher(prompt_type, args, checkpoint_loader):
-        if source_type in {PromptType.qg, PromptType.qg_cot}:
+        if prompt_type in {PromptType.qg, PromptType.qg_cot}:
             return EntityFetcher(args.dataset_name, args.inference_split)
-        elif source_type in {PromptType.qa, PromptType.qa_cot}:
+        elif prompt_type in {PromptType.qa, PromptType.qa_cot}:
             swapped_dir = checkpoint_loader.get_final_dir().replace('qa', 'qg')
             return QuestionFetcher(swapped_dir)
         else:
@@ -58,11 +60,11 @@ class DataFetcherFactory:
 class PromptCollator:
 
     def __init__(self, args):
-        self.prompt_factory = prompt.PromptFactory()
+        self.prompt_factory = PromptFactory()
         self.data_fetcher_factory = DataFetcherFactory()
         self.args = args
 
-    def get_prompts(prompt_type, checkpoint_loader):
+    def get_prompts(self, prompt_type, checkpoint_loader):
 
         data_fetcher = self.data_fetcher_factory.get_data_fetcher(prompt_type, self.args, checkpoint_loader)
         prompt_parser = self.prompt_factory.get_prompt(prompt_type)
