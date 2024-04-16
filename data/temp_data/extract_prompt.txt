@@ -1,0 +1,56 @@
+Text: Shakespeare's sonnets 127 through 152 are addressed to a woman with dun-colored skin who is given this twoword name, often contrasted with the "Fair Youth."
+Entity: sonnet 127
+
+Text: Of the 250 ethnic groups living in this country, the Hausa and Fulani comprise thirty percent of the roughly 127 million residents.
+Entity: 127 million residents
+
+Text: This composer, who called for an early use of multiphonics in an E minor horn concertino, wrote an F major bassoon concerto numbered 127 by Jähns and only second in popularity to Mozart's.
+Entity: concerto 127
+
+Text: Poems 18-126 form a sequence of 108 poems whose main theme continues to be the young man, but beginning with poem 127 the subject changes to the “dark lady”.
+Entity: poem 127
+
+Text: LZ 127 was the largest of these objects belonging to DELAG, which was the first commercial (*) transit service to use these vehicles.
+Entity: LZ 127
+
+Text: A bias of 127 is usually added to them, and they also contain a mantissa, sometimes called a significand.
+Entity: bias of 127
+
+Text: Hall and Jones associated this measure with latitude, speaking an "international language," and disfavoring diversion in an analysis across 127 countries.
+Entity: 127 countries
+
+Text: An actor with this last name starred in an adaptation of the real-life story of Aron Ralston, 127 Hours, in addition to playing the title character of Oz the Great and Powerful.
+Entity: 127 Hours
+
+Text: It has a maximum transfer rate of 12 megabits per second, with the ability to daisy-chain as many as 127 devices to one computer.
+Entity: 127 devices
+
+Text: A historic referendum called by this leader’s government repealed Section 127 of his country’s constitution, allowing “full-blood” Aborigines to be included in the census.
+Entity: Section 127
+
+Text: It's not related to Srivijaya, but George Cœdès ("se-dais") used this empire's Stela 127 to argue that the number "zero" was not a Western invention.
+Entity: Stela 127
+
+Text: Name this director of A Clockwork Orange, who made Shelley Duvall and Jack Nicholson repeat a scene from The Shining 127 times.
+Entity: 127 times
+
+Text: That other actor with this surname lands 127 kisses as the title character of 1926’s, Don Juan.
+Entity: 127 kisses
+
+Text: A queen of this people named Dihya supposedly lived to be 127 years old and led the failed resistance against Musa bin Nusayr.
+Entity: 127 years old
+
+Text: In C, a char (care) described by a form of this word can store a maximum value of 127 instead of 255.
+Entity: value of 127
+
+Text: Martin Williams identified a “marvelous mistake” on bar 127 of a track in this album in which the saxophonist enters early, causing the rhythm section to become confused.
+Entity: bar 127
+
+Text: Another set of these objects have 127 decorative flourishes, a reference to the combined numbers of the people involved in the (+) Philly Special.
+Entity: 127 decorative flourishes
+
+Text: A collection of poems about these words was written by Stephin Merritt and illustrated by Roz Chast, and includes a poem defining one of these words as “that mesmeric force / we now know isn’t there.” A word for a Tibetan breed of cattle and a word for a hundredth of a Vietnamese dong are among the 127 words of this type that are listed in (*) SOWPODS [SOH-pods].
+Entity: 127 words
+
+Text: The 127 model was extremely popular in the 1950s.
+Entity: 127 model
