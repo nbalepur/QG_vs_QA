@@ -225,7 +225,7 @@ def save_checkpoint(partition, results_dir, pt, answers, is_final):
 
     folder_path = '/'.join(final_file.split('/')[:-1])
     if not os.path.exists(folder_path):
-        os.mkdir(folder_path)
+        os.makedirs(folder_path)
 
     with open(final_file, 'wb') as handle:
         pickle.dump(answers, handle, protocol=pickle.HIGHEST_PROTOCOL)

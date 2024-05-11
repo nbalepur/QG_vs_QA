@@ -7,6 +7,7 @@ class Checkpoint:
         self.results_dir = f'{args.res_dir}/{args.model_nickname}'
         self.num_shots = args.num_shots
         self.partition = args.partition
+        self.run_name = args.run_name
 
     def setup_partition(self, dataset_size):
 
@@ -38,11 +39,11 @@ class Checkpoint:
     def set_directories(self, pt):
 
         if self.partition == 'full':
-            final_res_dir = f'{self.results_dir}/{pt.value}_{self.num_shots}_shot.pkl'
-            final_res_dir_temp = f'{self.results_dir}/{pt.value}_{self.num_shots}_shot_temp.pkl'
+            final_res_dir = f'{self.results_dir}/{self.run_name}/{pt.value}.pkl'
+            final_res_dir_temp = f'{self.results_dir}/{self.run_name}/{pt.value}_temporary.pkl'
         else:
-            final_res_dir = f'{self.results_dir}/{pt.value}_{self.num_shots}_shot_{self.partition}.pkl'
-            final_res_dir_temp = f'{self.results_dir}/{pt.value}_{self.num_shots}_shot_{self.partition}_temp.pkl'
+            final_res_dir = f'{self.results_dir}/{self.run_name}/{self.partition}/{pt.value}.pkl'
+            final_res_dir_temp = f'{self.results_dir}/{self.run_name}/{self.partition}/{pt.value}_temporary.pkl'
 
         self.final_res_dir = final_res_dir
         self.final_res_dir_temp = final_res_dir_temp
@@ -52,26 +53,25 @@ class Checkpoint:
         if os.path.exists(self.final_res_dir):
             with open(self.final_res_dir, 'rb') as handle:
                 outputs = pickle.load(handle)
-                return outputs, self.start + len(outputs['raw_text'])
+                return outputs
 
         if not os.path.exists(self.final_res_dir_temp):
-            return {'raw_text': [], 'prompt': []}, self.start
+            return {'raw_text': [], 'prompt': []}
         
         with open(self.final_res_dir_temp, 'rb') as handle:
             outputs = pickle.load(handle)
-
         return outputs
 
-    def save_checkpoint(self, is_final, outputs):
+    def save_checkpoint(self, outputs, is_final):
 
         out_dir = self.final_res_dir if is_final else self.final_res_dir_temp
 
         folder_path = '/'.join(out_dir.split('/')[:-1])
         if not os.path.exists(folder_path):
-            os.mkdir(folder_path)
+            os.makedirs(folder_path)
 
         with open(out_dir, 'wb') as handle:
-            pickle.dump(answers, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(outputs, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     def get_final_dir(self):
         return self.final_res_dir

@@ -19,7 +19,7 @@ class QuestionGenerationVanilla(ZeroShotPrompt):
 
     def create_prompt(self, data):
         answer = data['input']
-        prompt = f'Generate a question with the answer: "{answer}". Your output should end with the line "Question:" followed by the question.'
+        prompt = f'Generate a one-sentence question that can only be answered by: "{answer}". The question should not contain the text "{answer}". Please format your output as "Question: [insert generated question]"'
         return prompt
 
 class QuestionGenerationCoT(ZeroShotPrompt):
@@ -35,9 +35,7 @@ class QuestionAnsweringVanilla(ZeroShotPrompt):
 
     def create_prompt(self, data):
         question = data['input']
-        if question[-1] != '?':
-            question = question + '?'
-        prompt = f'Answer the question: {question} Your output should end with the line "Answer:" followed by the answer.'
+        prompt = f'Generate a short answer to the question: "{question}". The answer should only be a few words long. Please format your output as "Answer: [insert generated answer]"'
         return prompt
 
 class QuestionAnsweringCoT(ZeroShotPrompt):

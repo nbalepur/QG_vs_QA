@@ -32,8 +32,13 @@ def setup():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--run_name",
+        type=str,
+        help="String to identify this run",
+        default="",
+    )
+    parser.add_argument(
         "--model_nickname",
-        '-m',
         type=str,
         help="Nickname of the model in directory",
         default="llama 7b",
@@ -174,15 +179,19 @@ def main(args):
         # set up inference bounds
         start, end = checkpoint_loader.setup_partition(len(prompts))
 
-        # load current save state
+        # load current save state and adjust starting point
         outputs = checkpoint_loader.load_checkpoint()
+        start += len(outputs['raw_text'])
 
         for idx in tqdm.tqdm(range(start, end)):
             prompt = prompts[idx]
-            print(prompt)
+
+            if prompt == None:
+                outputs['raw_text'].append(None)
+                outputs['prompt'].append(None)
+                continue
+
             out_text = model.generate_text(prompt)
-            print(out_text)
-            exit(0)
             outputs['raw_text'].append(out_text)
             outputs['prompt'].append(prompt)
             checkpoint_loader.save_checkpoint(outputs, False)
