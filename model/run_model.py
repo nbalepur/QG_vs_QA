@@ -168,7 +168,9 @@ def main(args):
     # load prompt collator
     prompt_collator = PromptCollator(args)
 
-    for pt in args.prompt_types[0]:
+    pts = [PromptType.qa]
+
+    for pt in pts:
 
         # set output directories
         checkpoint_loader.set_directories(pt) 

@@ -8,7 +8,7 @@ dataset_name="nbalepur/QG_vs_QA_v2"
 
 # model details
 model_nickname="llama3_70b_chat"
-model_name="meta-llama/Meta-Llama-3-70B-Instruct"
+model_name="meta-llama/Meta-Llama-3-8B-Instruct"
 model_type="hf_chat"
 
 # how to identify this run
@@ -19,7 +19,7 @@ num_shots=0
 temperature=0.0
 min_tokens=5
 max_tokens=200
-hf_token="..." # huggingface token read (for downloading gated models and datasets)
+hf_token="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" # huggingface token read (for downloading gated models and datasets)
 open_ai_token="" # OpenAI token (for GPT models)
 device_map="auto" # device map ('cpu', 'cuda', 'auto')
 partition="full"  # partition of the dataset. can be "full" or in halves (e.g. "first_half"), quarters (e.g. "first_quarter"), or eigths (e.g. "first_eighth")
@@ -31,7 +31,7 @@ experiments=("qg")
 # directory setup
 res_dir=".../QG_vs_QA/results/" # Results folder directory
 prompt_dir=".../QG_vs_QA/prompts" # Prompt folder directory
-cache_dir="..." # Cache directory to save the model
+cache_dir="D:/hf_cache" # Cache directory to save the model
 
 experiments_str=$(IFS=" "; echo "${experiments[*]}")
 

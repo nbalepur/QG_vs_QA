@@ -1,2 +1,4 @@
 scripts/
 data/
+model/__pycache__/
+sample_scripts/model.sh

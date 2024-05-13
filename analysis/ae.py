@@ -3,9 +3,9 @@ import pickle
 import numpy as np
 from qa_metrics.f1 import f1_score_with_precision_recall
 
-model = 'yi_34b_chat'
-run = '0_shot_0_temp'
-results_dir_pref = '/fs/clip-quiz/nbalepur/QG_vs_QA/results/'
+model = '6b'
+run = '6b'
+results_dir_pref = './results/'
 
 def score_answer(llm_answer, original_answer, threshold = 0.8):
     reference_answer = original_answer

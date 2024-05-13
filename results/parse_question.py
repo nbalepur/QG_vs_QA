@@ -1,7 +1,7 @@
 import pickle
-run_name = '0_shot_0_temp'
-model_name = 'llama3_70b_chat'
-f = f'/fs/clip-quiz/nbalepur/QG_vs_QA/results/{model_name}/{run_name}/qg.pkl'
+run_name = '6b'
+model_name = '6b'
+f = f'./results/{model_name}/{run_name}/qg.pkl'
 with open(f, 'rb') as handle:
     data = pickle.load(handle)
 raw_out = data['raw_text']
@@ -36,7 +36,7 @@ for out in raw_out:
 
 print(raw_out[2])
 
-f_ = open(f'/fs/clip-quiz/nbalepur/QG_vs_QA/results/{model_name}/out_question.txt', 'w+')
+f_ = open(f'./results/{model_name}/out_question.txt', 'w+', encoding='utf-8')
 for q in parsed_qs:
     f_.write(f'{q}\n')
 f_.close()
