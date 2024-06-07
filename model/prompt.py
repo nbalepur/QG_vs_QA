@@ -35,7 +35,7 @@ class QuestionAnsweringVanilla(ZeroShotPrompt):
 
     def create_prompt(self, data):
         question = data['input']
-        prompt = f'Generate a short answer to the question: "{question}". The answer should only be a few words long. Please format your output as "Answer: [insert generated answer]"'
+        prompt = f'Generate just the answer to the question: "{question}". Please format your output as "Answer: [insert generated answer]"'
         return prompt
 
 class QuestionAnsweringCoT(ZeroShotPrompt):
