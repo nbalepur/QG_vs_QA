@@ -35,7 +35,7 @@ class QuestionAnsweringVanilla(ZeroShotPrompt):
 
     def create_prompt(self, data):
         question = data['input']
-        prompt = f'Generate just the answer to the question: "{question}". Please format your output as "Answer: [insert generated answer]"'
+        prompt = f'Generate only the answer to the question: "{question}". Please format your output as "Answer: [insert generated answer]"'
         return prompt
 
 class QuestionAnsweringCoT(ZeroShotPrompt):
@@ -45,7 +45,6 @@ class QuestionAnsweringCoT(ZeroShotPrompt):
         prompt = QuestionAnsweringVanilla().create_prompt(data)
         prompt += ' Let\'s think step by step.'
         return prompt
-
 
 class PromptFactory:
 

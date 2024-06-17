@@ -8,3 +8,6 @@ class PromptType(Enum):
 
 class ModelType(Enum):
     hf_chat = 'hf_chat'
+    open_ai = 'open_ai'
+    cohere = 'cohere'
+    anthropic = 'anthropic'

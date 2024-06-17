@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 import random
 import copy
-
 from transformers import pipeline, AutoTokenizer
 import transformers
 import torch
 from huggingface_hub.hf_api import HfFolder
 from enums import ModelType
+import time
+import openai
 
 # Abstract base class for implementing zero-shot prompts
 class LLM(ABC):
@@ -67,12 +68,51 @@ class HuggingFaceChatModel(LLM):
             min_new_tokens=self.min_length, 
             max_new_tokens=self.max_length,
             return_full_text=False)[0]['generated_text'].strip()
-    
+
+class OpenAI(LLM):
+
+    def __init__(self, openai_model_name, temp, max_length, openai_token):
+
+        self.temp = temp
+        self.openai_model_name = openai_model_name
+        self.max_length = max_length
+        self.openai_token = openai_token
+
+    def generate_text_helper(self, prompt, num_sec=0, max_retries=5):
+
+        if num_sec == max_retries:
+            print("MAX RETRIES EXCEDED")
+            return None
+
+        time.sleep(2**(num_sec - 1))
+
+        try:
+            client = openai.OpenAI(api_key=self.openai_token)
+            response = client.chat.completions.create(
+                        model=self.openai_model_name,
+                        messages=[
+                            {"role": "user", "content": prompt}
+                        ],
+                        max_tokens=self.max_length,
+                        temperature=self.temp)
+            return response.choices[0].message.content
+
+        except Exception as e:
+            return self.generate_text_helper(prompt, num_sec=num_sec+1, max_retries=max_retries)
+
+    def generate_text(self, prompt):
+        
+        return self.generate_text_helper(prompt, num_sec=0, max_retries=3)
+
 class ModelFactory:
 
     @staticmethod
     def get_model(args):
         if args.model_type[0] == ModelType.hf_chat:
             return HuggingFaceChatModel(args.model_name, args.temperature, args.min_tokens, args.max_tokens, args.load_in_4bit, args.load_in_8bit, args.device_map, args.cache_dir, args.hf_token)
+        
+        if args.model_type[0] == ModelType.open_ai:
+            return OpenAI(args.model_name, args.temperature, args.max_tokens, args.open_ai_token)
+
         else:
             raise ValueError(f"Unsupported Model type: {args.model_type[0]}")

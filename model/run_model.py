@@ -192,6 +192,7 @@ def main(args):
                 continue
 
             out_text = model.generate_text(prompt)
+
             outputs['raw_text'].append(out_text)
             outputs['prompt'].append(prompt)
             checkpoint_loader.save_checkpoint(outputs, False)
