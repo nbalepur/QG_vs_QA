@@ -8,6 +8,8 @@ from huggingface_hub.hf_api import HfFolder
 from enums import ModelType
 import time
 import openai
+import anthropic
+import cohere
 
 # Abstract base class for implementing zero-shot prompts
 class LLM(ABC):
@@ -104,6 +106,80 @@ class OpenAI(LLM):
         
         return self.generate_text_helper(prompt, num_sec=0, max_retries=3)
 
+class Cohere(LLM):
+
+    def __init__(self, cohere_model_name, temp, max_length, cohere_token):
+
+        self.temp = temp
+        self.cohere_model_name = cohere_model_name
+        self.max_length = max_length
+        self.co = cohere.Client(cohere_token)
+
+    def generate_text_helper(self, prompt, num_sec=0, max_retries=5):
+
+        if num_sec == max_retries:
+            print("MAX RETRIES EXCEDED")
+            return None
+
+        time.sleep(2**(num_sec))
+
+        try:
+            response = self.co.chat(
+                message=prompt,
+                max_tokens=self.max_length,
+                model=self.cohere_model_name,
+                temperature=self.temp,
+            )
+            return response.text
+
+        except Exception as e:
+            return self.generate_text_helper(prompt, num_sec=num_sec+1, max_retries=max_retries)
+
+    def generate_text(self, prompt):
+        return self.generate_text_helper(prompt, num_sec=0, max_retries=3)
+
+class Anthropic(LLM):
+
+    def __init__(self, model_name, temp, max_length, anthropic_token):
+
+        self.temp = temp
+        self.model_name = model_name
+        self.max_length = max_length
+        self.client = anthropic.Anthropic(api_key=anthropic_token)
+
+    def generate_text_helper(self, prompt, num_sec=0, max_retries=5):
+
+        if num_sec == max_retries:
+            print("MAX RETRIES EXCEDED")
+            return None
+
+        time.sleep(2**(num_sec))
+
+        try:
+            message = self.client.messages.create(
+                model=self.model_name,
+                max_tokens=self.max_length,
+                temperature=self.temp,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": prompt
+                            }
+                        ]
+                    }
+                ]
+            )
+            return message.content[0].text
+
+        except Exception as e:
+            return self.generate_text_helper(prompt, num_sec=num_sec+1, max_retries=max_retries)
+
+    def generate_text(self, prompt):
+        return self.generate_text_helper(prompt, num_sec=0, max_retries=3)
+
 class ModelFactory:
 
     @staticmethod
@@ -113,6 +189,12 @@ class ModelFactory:
         
         if args.model_type[0] == ModelType.open_ai:
             return OpenAI(args.model_name, args.temperature, args.max_tokens, args.open_ai_token)
+
+        if args.model_type[0] == ModelType.cohere:
+            return Cohere(args.model_name, args.temperature, args.max_tokens, args.cohere_token)
+
+        if args.model_type[0] == ModelType.anthropic:
+            return Anthropic(args.model_name, args.temperature, args.max_tokens, args.anthropic_token)
 
         else:
             raise ValueError(f"Unsupported Model type: {args.model_type[0]}")
